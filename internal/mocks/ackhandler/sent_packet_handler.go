@@ -12,10 +12,10 @@ package mockackhandler
 import (
 	reflect "reflect"
 
-	ackhandler "github.com/quic-go/quic-go/internal/ackhandler"
-	monotime "github.com/quic-go/quic-go/internal/monotime"
-	protocol "github.com/quic-go/quic-go/internal/protocol"
-	wire "github.com/quic-go/quic-go/internal/wire"
+	ackhandler "github.com/orgmio/quic-mio/internal/ackhandler"
+	monotime "github.com/orgmio/quic-mio/internal/monotime"
+	protocol "github.com/orgmio/quic-mio/internal/protocol"
+	wire "github.com/orgmio/quic-mio/internal/wire"
 	gomock "go.uber.org/mock/gomock"
 )
 

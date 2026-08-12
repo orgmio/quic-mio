@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/quic-go/quic-go/internal/protocol"
+	"github.com/orgmio/quic-mio/internal/protocol"
 )
 
 // Instead of using an init function, the AEADs are created lazily.

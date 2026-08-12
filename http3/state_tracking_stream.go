@@ -6,7 +6,7 @@ import (
 	"os"
 	"sync"
 
-	"github.com/quic-go/quic-go"
+	"github.com/orgmio/quic-mio"
 )
 
 const streamDatagramQueueLen = 32

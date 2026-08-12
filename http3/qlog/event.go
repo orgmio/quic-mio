@@ -3,8 +3,8 @@ package qlog
 import (
 	"time"
 
-	"github.com/quic-go/quic-go"
-	"github.com/quic-go/quic-go/qlogwriter/jsontext"
+	"github.com/orgmio/quic-mio"
+	"github.com/orgmio/quic-mio/qlogwriter/jsontext"
 )
 
 type encoderHelper struct {

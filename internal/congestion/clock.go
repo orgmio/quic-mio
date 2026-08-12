@@ -1,7 +1,7 @@
 package congestion
 
 import (
-	"github.com/quic-go/quic-go/internal/monotime"
+	"github.com/orgmio/quic-mio/internal/monotime"
 )
 
 // A Clock returns the current time

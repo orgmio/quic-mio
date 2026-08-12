@@ -14,7 +14,7 @@ import (
 	http "net/http"
 	reflect "reflect"
 
-	quic "github.com/quic-go/quic-go"
+	quic "github.com/orgmio/quic-mio"
 	gomock "go.uber.org/mock/gomock"
 )
 

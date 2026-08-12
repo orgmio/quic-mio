@@ -4,8 +4,8 @@ import (
 	"errors"
 	"io"
 
-	"github.com/quic-go/quic-go/internal/protocol"
-	"github.com/quic-go/quic-go/quicvarint"
+	"github.com/orgmio/quic-mio/internal/protocol"
+	"github.com/orgmio/quic-mio/quicvarint"
 )
 
 // A NewTokenFrame is a NEW_TOKEN frame

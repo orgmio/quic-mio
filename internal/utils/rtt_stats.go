@@ -4,7 +4,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/quic-go/quic-go/internal/protocol"
+	"github.com/orgmio/quic-mio/internal/protocol"
 )
 
 const (

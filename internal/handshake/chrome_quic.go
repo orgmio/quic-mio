@@ -5,9 +5,9 @@ import (
 	"crypto/tls"
 	"errors"
 
-	"github.com/quic-go/quic-go/quicvarint"
-	utls "github.com/refraction-networking/utls"
-	"github.com/refraction-networking/utls/dicttls"
+	"github.com/orgmio/quic-mio/quicvarint"
+	utls "github.com/orgmio/utls-mio"
+	"github.com/orgmio/utls-mio/dicttls"
 )
 
 type tlsQUICConnection interface {

@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/quic-go/quic-go"
+	"github.com/orgmio/quic-mio"
 
 	"github.com/stretchr/testify/require"
 )

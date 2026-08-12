@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/quic-go/quic-go/internal/protocol"
-	"github.com/quic-go/quic-go/internal/qerr"
-	"github.com/quic-go/quic-go/quicvarint"
+	"github.com/orgmio/quic-mio/internal/protocol"
+	"github.com/orgmio/quic-mio/internal/qerr"
+	"github.com/orgmio/quic-mio/quicvarint"
 )
 
 var errUnknownFrameType = errors.New("unknown frame type")

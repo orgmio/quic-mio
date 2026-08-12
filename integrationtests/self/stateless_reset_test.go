@@ -8,8 +8,8 @@ import (
 	"testing/synctest"
 	"time"
 
-	"github.com/quic-go/quic-go"
-	"github.com/quic-go/quic-go/testutils/simnet"
+	"github.com/orgmio/quic-mio"
+	"github.com/orgmio/quic-mio/testutils/simnet"
 
 	"github.com/stretchr/testify/require"
 )

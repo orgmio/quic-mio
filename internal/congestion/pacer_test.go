@@ -6,8 +6,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/quic-go/quic-go/internal/monotime"
-	"github.com/quic-go/quic-go/internal/protocol"
+	"github.com/orgmio/quic-mio/internal/monotime"
+	"github.com/orgmio/quic-mio/internal/protocol"
 
 	"github.com/stretchr/testify/require"
 )
