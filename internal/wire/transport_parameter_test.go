@@ -68,10 +68,10 @@ func TestMarshalChromeClientTransportParameters(t *testing.T) {
 	}
 
 	require.Len(t, ids, 13)
-	require.Equal(t, []uint64{0x4, 0xf, 0x9, 0x20, 0x1, 0x11, 0x8, 0x7}, ids[:8])
-	require.True(t, ids[8] >= 27 && (ids[8]-27)%31 == 0, "invalid GREASE ID %#x", ids[8])
-	require.Equal(t, []uint64{0x6, 0x5, 0x3128, 0x3}, ids[9:])
-	require.Len(t, values[ids[8]], 3)
+	require.Equal(t, []uint64{0x9, 0x6, 0x7, 0x5}, ids[:4])
+	require.True(t, ids[4] >= 27 && (ids[4]-27)%31 == 0, "invalid GREASE ID %#x", ids[4])
+	require.Equal(t, []uint64{0x3, 0x4, 0x20, 0xf, 0x11, 0x8, 0x3128, 0x1}, ids[5:])
+	require.Len(t, values[ids[4]], 11)
 	require.Equal(t, versionInfo, values[0x11])
 	require.Equal(t, []byte("ORIG"), values[0x3128])
 	require.Equal(t, quicvarint.Append(nil, 1472), values[0x3])

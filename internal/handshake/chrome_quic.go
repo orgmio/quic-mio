@@ -59,27 +59,27 @@ func chromeQUICClientHello(rawTransportParameters []byte) *utls.ClientHelloSpec 
 	return &utls.ClientHelloSpec{
 		TLSVersMin:         utls.VersionTLS13,
 		TLSVersMax:         utls.VersionTLS13,
-		CipherSuites:       []uint16{utls.GREASE_PLACEHOLDER, utls.TLS_AES_128_GCM_SHA256, utls.TLS_AES_256_GCM_SHA384, utls.TLS_CHACHA20_POLY1305_SHA256},
+		CipherSuites:       []uint16{utls.TLS_AES_128_GCM_SHA256, utls.TLS_AES_256_GCM_SHA384, utls.TLS_CHACHA20_POLY1305_SHA256},
 		CompressionMethods: []byte{0},
 		Extensions: []utls.TLSExtension{
-			&utls.ALPNExtension{AlpnProtocols: []string{"h3"}},
-			&utls.SNIExtension{},
-			&utls.QUICTransportParametersExtension{TransportParameters: decodeUTLSTransportParameters(rawTransportParameters)},
-			&utls.SupportedVersionsExtension{Versions: []uint16{utls.VersionTLS13}},
-			&utls.GREASEEncryptedClientHelloExtension{
-				CandidateCipherSuites: []utls.HPKESymmetricCipherSuite{{KdfId: dicttls.HKDF_SHA256, AeadId: dicttls.AEAD_AES_128_GCM}},
-				CandidatePayloadLens:  []uint16{224}, // AES-GCM adds 16 bytes, matching Brave's 240-byte payload.
-			},
 			&utls.UtlsCompressCertExtension{Algorithms: []utls.CertCompressionAlgo{utls.CertCompressionBrotli}},
-			&utls.PSKKeyExchangeModesExtension{Modes: []uint8{utls.PskModeDHE}},
 			&utls.SignatureAlgorithmsExtension{SupportedSignatureAlgorithms: []utls.SignatureScheme{
 				utls.ECDSAWithP256AndSHA256, utls.PSSWithSHA256, utls.PKCS1WithSHA256,
 				utls.ECDSAWithP384AndSHA384, utls.PSSWithSHA384, utls.PKCS1WithSHA384,
 				utls.PSSWithSHA512, utls.PKCS1WithSHA512, utls.PKCS1WithSHA1,
 			}},
-			&utls.SupportedCurvesExtension{Curves: []utls.CurveID{utls.X25519MLKEM768, utls.X25519, utls.CurveP256, utls.CurveP384}},
-			&utls.KeyShareExtension{KeyShares: []utls.KeyShare{{Group: utls.X25519MLKEM768}, {Group: utls.X25519}}},
+			&utls.PSKKeyExchangeModesExtension{Modes: []uint8{utls.PskModeDHE}},
+			&utls.SNIExtension{},
+			&utls.ALPNExtension{AlpnProtocols: []string{"h3"}},
+			&utls.SupportedVersionsExtension{Versions: []uint16{utls.VersionTLS13}},
+			&utls.GREASEEncryptedClientHelloExtension{
+				CandidateCipherSuites: []utls.HPKESymmetricCipherSuite{{KdfId: dicttls.HKDF_SHA256, AeadId: dicttls.AEAD_AES_128_GCM}},
+				CandidatePayloadLens:  []uint16{144}, // matches Brave's captured 144-byte ECH payload
+			},
 			&utls.ApplicationSettingsExtensionNew{SupportedProtocols: []string{"h3"}},
+			&utls.SupportedCurvesExtension{Curves: []utls.CurveID{utls.X25519MLKEM768, utls.X25519, utls.CurveP256, utls.CurveP384}},
+			&utls.QUICTransportParametersExtension{TransportParameters: decodeUTLSTransportParameters(rawTransportParameters)},
+			&utls.KeyShareExtension{KeyShares: []utls.KeyShare{{Group: utls.X25519MLKEM768}, {Group: utls.X25519}}},
 		},
 	}
 }

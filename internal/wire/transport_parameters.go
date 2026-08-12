@@ -498,31 +498,33 @@ func (p *TransportParameters) Marshal(pers protocol.Perspective) []byte {
 // ClientHello fingerprint even though QUIC assigns no semantic meaning to it.
 func (p *TransportParameters) marshalChromeClient() []byte {
 	b := make([]byte, 0, 128)
-	b = p.marshalVarintParam(b, initialMaxDataParameterID, uint64(p.InitialMaxData))
-	b = quicvarint.Append(b, uint64(initialSourceConnectionIDParameterID))
-	b = quicvarint.Append(b, uint64(p.InitialSourceConnectionID.Len()))
-	b = append(b, p.InitialSourceConnectionID.Bytes()...)
 	b = p.marshalVarintParam(b, initialMaxStreamsUniParameterID, uint64(p.MaxUniStreamNum))
-	b = p.marshalVarintParam(b, maxDatagramFrameSizeParameterID, uint64(p.MaxDatagramFrameSize))
-	b = p.marshalVarintParam(b, maxIdleTimeoutParameterID, uint64(p.MaxIdleTimeout/time.Millisecond))
-	b = p.appendAdditionalClientParameter(b, 0x11)
-	b = p.marshalVarintParam(b, initialMaxStreamsBidiParameterID, uint64(p.MaxBidiStreamNum))
+	b = p.marshalVarintParam(b, initialMaxStreamDataBidiRemoteParameterID, uint64(p.InitialMaxStreamDataBidiRemote))
 	b = p.marshalVarintParam(b, initialMaxStreamDataUniParameterID, uint64(p.InitialMaxStreamDataUni))
+	b = p.marshalVarintParam(b, initialMaxStreamDataBidiLocalParameterID, uint64(p.InitialMaxStreamDataBidiLocal))
 
-	// Chromium sends one large, reserved transport parameter with three random
-	// bytes. Using the full QUIC varint range avoids quic-go's unusually small
+	// Chromium sends one large, reserved transport parameter with an 11-byte
+	// value. Using the full QUIC varint range avoids quic-go's unusually small
 	// GREASE IDs, which are visible in packet captures.
 	var random [11]byte
 	_, _ = rand.Read(random[:])
 	multiplier := binary.BigEndian.Uint64(random[:8]) % ((quicvarint.Max - 27) / 31)
 	b = quicvarint.Append(b, 27+31*multiplier)
-	b = quicvarint.Append(b, 3)
-	b = append(b, random[8:]...)
+	b = quicvarint.Append(b, 11)
+	b = append(b, random[:]...)
 
-	b = p.marshalVarintParam(b, initialMaxStreamDataBidiRemoteParameterID, uint64(p.InitialMaxStreamDataBidiRemote))
-	b = p.marshalVarintParam(b, initialMaxStreamDataBidiLocalParameterID, uint64(p.InitialMaxStreamDataBidiLocal))
+	if p.MaxUDPPayloadSize > 0 {
+		b = p.marshalVarintParam(b, maxUDPPayloadSizeParameterID, uint64(p.MaxUDPPayloadSize))
+	}
+	b = p.marshalVarintParam(b, initialMaxDataParameterID, uint64(p.InitialMaxData))
+	b = p.marshalVarintParam(b, maxDatagramFrameSizeParameterID, uint64(p.MaxDatagramFrameSize))
+	b = quicvarint.Append(b, uint64(initialSourceConnectionIDParameterID))
+	b = quicvarint.Append(b, uint64(p.InitialSourceConnectionID.Len()))
+	b = append(b, p.InitialSourceConnectionID.Bytes()...)
+	b = p.appendAdditionalClientParameter(b, 0x11)
+	b = p.marshalVarintParam(b, initialMaxStreamsBidiParameterID, uint64(p.MaxBidiStreamNum))
 	b = p.appendAdditionalClientParameter(b, 0x3128)
-	b = p.marshalVarintParam(b, maxUDPPayloadSizeParameterID, uint64(p.MaxUDPPayloadSize))
+	b = p.marshalVarintParam(b, maxIdleTimeoutParameterID, uint64(p.MaxIdleTimeout/time.Millisecond))
 	for _, param := range p.AdditionalClientParameters {
 		if param.ID == 0x11 || param.ID == 0x3128 {
 			continue
