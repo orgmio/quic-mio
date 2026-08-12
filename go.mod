@@ -3,7 +3,7 @@ module github.com/orgmio/quic-mio
 go 1.26.5
 
 require (
-	github.com/orgmio/utls-mio v1.8.2
+	github.com/orgmio/utls-mio v0.0.0-20260812073257-f76146880111
 	github.com/quic-go/go-ossfuzz-seeds v0.1.0
 	github.com/quic-go/qpack v0.6.0
 	github.com/stretchr/testify v1.11.1
@@ -29,5 +29,3 @@ require (
 )
 
 tool go.uber.org/mock/mockgen
-
-replace github.com/orgmio/utls-mio => ../utls-mio
