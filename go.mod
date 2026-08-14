@@ -1,15 +1,15 @@
 module github.com/orgmio/quic-mio
 
-go 1.26.5
+go 1.26.6
 
 require (
-	github.com/orgmio/utls-mio v0.0.0-20260812073257-f76146880111
+	github.com/orgmio/utls-mio v0.0.0-20260814132053-323c12a86305
 	github.com/quic-go/go-ossfuzz-seeds v0.1.0
 	github.com/quic-go/qpack v0.6.0
 	github.com/stretchr/testify v1.11.1
 	go.uber.org/mock v0.5.2
 	golang.org/x/crypto v0.55.0
-	golang.org/x/net v0.57.0
+	golang.org/x/net v0.58.0
 	golang.org/x/sync v0.22.0
 	golang.org/x/sys v0.47.0
 )

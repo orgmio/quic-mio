@@ -8,8 +8,8 @@ import (
 	"slices"
 	"testing"
 
-	ossfuzzseeds "github.com/quic-go/go-ossfuzz-seeds"
 	"github.com/orgmio/quic-mio/internal/protocol"
+	ossfuzzseeds "github.com/quic-go/go-ossfuzz-seeds"
 
 	"github.com/stretchr/testify/require"
 )

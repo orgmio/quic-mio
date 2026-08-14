@@ -10,8 +10,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/quic-go/qpack"
 	"github.com/orgmio/quic-mio/http3/qlog"
+	"github.com/quic-go/qpack"
 
 	"golang.org/x/net/http/httpguts"
 )

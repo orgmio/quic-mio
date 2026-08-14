@@ -10,9 +10,9 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/quic-go/qpack"
 	"github.com/orgmio/quic-mio"
 	"github.com/orgmio/quic-mio/qlogwriter"
+	"github.com/quic-go/qpack"
 )
 
 // RawServerConn is an HTTP/3 server connection.
