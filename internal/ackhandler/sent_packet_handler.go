@@ -89,9 +89,11 @@ type sentPacketHandler struct {
 
 	bytesInFlight protocol.ByteCount
 
-	congestion congestion.SendAlgorithmWithDebugInfos
-	rttStats   *utils.RTTStats
-	connStats  *utils.ConnectionStats
+	congestion      congestion.SendAlgorithmWithDebugInfos
+	useBBR          bool
+	maxDatagramSize protocol.ByteCount
+	rttStats        *utils.RTTStats
+	connStats       *utils.ConnectionStats
 
 	// The number of times a PTO has been sent without receiving an ack.
 	ptoCount uint32
@@ -148,6 +150,7 @@ func NewSentPacketHandler(
 		rttStats:                       rttStats,
 		connStats:                      connStats,
 		congestion:                     congestion,
+		maxDatagramSize:                initialMaxDatagramSize,
 		ignorePacketsBelow:             ignorePacketsBelow,
 		perspective:                    pers,
 		qlogger:                        qlogger,
@@ -1028,7 +1031,20 @@ func (h *sentPacketHandler) TimeUntilSend() monotime.Time {
 }
 
 func (h *sentPacketHandler) SetMaxDatagramSize(s protocol.ByteCount) {
+	h.maxDatagramSize = s
 	h.congestion.SetMaxDatagramSize(s)
+}
+
+// EnableBBR replaces CUBIC with BBR. Safe to call immediately after construction.
+func (h *sentPacketHandler) EnableBBR() {
+	h.useBBR = true
+	h.congestion = congestion.NewBBRSender(
+		congestion.DefaultClock{},
+		h.rttStats,
+		h.connStats,
+		h.maxDatagramSize,
+		h.qlogger,
+	)
 }
 
 func (h *sentPacketHandler) isAmplificationLimited() bool {
@@ -1131,13 +1147,24 @@ func (h *sentPacketHandler) MigratedPath(now monotime.Time, initialMaxDatagramSi
 	for pn := range h.appDataPackets.history.PathProbes() {
 		h.appDataPackets.history.RemovePathProbe(pn)
 	}
-	h.congestion = congestion.NewCubicSender(
-		congestion.DefaultClock{},
-		h.rttStats,
-		h.connStats,
-		initialMaxDatagramSize,
-		false, // use CUBIC until the BBR sender is installed
-		h.qlogger,
-	)
+	if h.useBBR {
+		h.congestion = congestion.NewBBRSender(
+			congestion.DefaultClock{},
+			h.rttStats,
+			h.connStats,
+			initialMaxDatagramSize,
+			h.qlogger,
+		)
+	} else {
+		h.congestion = congestion.NewCubicSender(
+			congestion.DefaultClock{},
+			h.rttStats,
+			h.connStats,
+			initialMaxDatagramSize,
+			false,
+			h.qlogger,
+		)
+	}
+	h.maxDatagramSize = initialMaxDatagramSize
 	h.setLossDetectionTimer(now)
 }

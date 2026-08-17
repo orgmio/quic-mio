@@ -321,6 +321,11 @@ var newConnection = func(
 		s.qlogger,
 		s.logger,
 	)
+	if s.config.UseBBR {
+		if enabler, ok := s.sentPacketHandler.(interface{ EnableBBR() }); ok {
+			enabler.EnableBBR()
+		}
+	}
 	s.maxPayloadSizeEstimate.Store(uint32(estimateMaxPayloadSize(protocol.ByteCount(s.config.InitialPacketSize))))
 	statelessResetToken := statelessResetter.GetStatelessResetToken(srcConnID)
 	params := &wire.TransportParameters{
@@ -450,6 +455,11 @@ var newClientConnection = func(
 		s.qlogger,
 		s.logger,
 	)
+	if s.config.UseBBR {
+		if enabler, ok := s.sentPacketHandler.(interface{ EnableBBR() }); ok {
+			enabler.EnableBBR()
+		}
+	}
 	s.maxPayloadSizeEstimate.Store(uint32(estimateMaxPayloadSize(protocol.ByteCount(s.config.InitialPacketSize))))
 	oneRTTStream := newCryptoStream()
 	params := &wire.TransportParameters{

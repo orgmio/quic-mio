@@ -138,6 +138,7 @@ func populateConfig(config *Config) *Config {
 			return parameters
 		}(),
 		UseChromeClientHello: config.UseChromeClientHello,
+		UseBBR:               config.UseBBR,
 		Allow0RTT:            config.Allow0RTT,
 		Tracer:               config.Tracer,
 	}

@@ -74,7 +74,12 @@ func chromeQUICClientHello(rawTransportParameters []byte) *utls.ClientHelloSpec 
 			&utls.SupportedVersionsExtension{Versions: []uint16{utls.VersionTLS13}},
 			&utls.GREASEEncryptedClientHelloExtension{
 				CandidateCipherSuites: []utls.HPKESymmetricCipherSuite{{KdfId: dicttls.HKDF_SHA256, AeadId: dicttls.AEAD_AES_128_GCM}},
-				CandidatePayloadLens:  []uint16{144}, // matches Brave's captured 144-byte ECH payload
+				// Brave QUIC ECH extension data is 186 bytes in
+				// way-brave-caddy-baidu.pcapng. GREASE payload is
+				// inner+16 (GCM tag); plus 10-byte header and 32-byte
+				// X25519 encapsulated key: 10+32+(128+16)=186.
+				// 144 was producing 202 and did not match the capture.
+				CandidatePayloadLens: []uint16{128},
 			},
 			&utls.ApplicationSettingsExtensionNew{SupportedProtocols: []string{"h3"}},
 			&utls.SupportedCurvesExtension{Curves: []utls.CurveID{utls.X25519MLKEM768, utls.X25519, utls.CurveP256, utls.CurveP384}},

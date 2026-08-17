@@ -188,6 +188,9 @@ type Config struct {
 	// UseChromeClientHello enables the Chromium-style TLS ClientHello provided
 	// by the ixa fork. It only affects QUIC clients.
 	UseChromeClientHello bool
+	// UseBBR selects BBR congestion control instead of CUBIC.
+	// Chromium QUIC uses BBR; CUBIC collapses on lossy long-haul paths.
+	UseBBR bool
 
 	Tracer func(ctx context.Context, isClient bool, connID ConnectionID) qlogwriter.Trace
 }

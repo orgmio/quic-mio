@@ -132,6 +132,8 @@ func configWithNonZeroNonFunctionFields(t *testing.T) *Config {
 			f.Set(reflect.ValueOf([]TransportParameter{{ID: 0x11, Value: []byte{1, 2, 3}}}))
 		case "UseChromeClientHello":
 			f.Set(reflect.ValueOf(true))
+		case "UseBBR":
+			f.Set(reflect.ValueOf(true))
 		default:
 			t.Fatalf("all fields must be accounted for, but saw unknown field %q", fn)
 		}
