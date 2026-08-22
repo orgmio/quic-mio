@@ -1,9 +1,9 @@
 module github.com/orgmio/quic-mio
 
-go 1.26.6
+go 1.27.0
 
 require (
-	github.com/orgmio/utls-mio v0.0.0-20260817085211-240b6369a8a5
+	github.com/orgmio/utls-mio v0.0.0-20260822111509-980e2e4980ef
 	github.com/quic-go/go-ossfuzz-seeds v0.1.0
 	github.com/quic-go/qpack v0.6.0
 	github.com/stretchr/testify v1.11.1
